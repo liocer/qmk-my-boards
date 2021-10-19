@@ -39,9 +39,7 @@
 
 #define BACKLIGHT_EFFECT_MAX 3
 
-#ifndef MONO_BACKLIGHT_COLOR_1
-#define MONO_BACKLIGHT_COLOR_1 { .h = 0, .s = 255 }
-#endif
+#define MONO_BACKLIGHT_COLOR_1 { .h = 127, .s = 255 }
 
 backlight_config g_config = {
     .disable_when_usb_suspended = MONO_BACKLIGHT_DISABLE_WHEN_USB_SUSPENDED,
@@ -166,12 +164,45 @@ void backlight_effect_cycle_all(void)
 void backlight_effect_indicators(void)
 {
 #if defined(MONO_BACKLIGHT_WT75_A)
-    HSV hsv = { .h = g_config.color_1.h, .s = g_config.color_1.s, .v = g_config.brightness };
+    //HSV hsv = { .h = g_config.color_1.h, .s = g_config.color_1.s, .v = g_config.brightness };
+    HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness };
     RGB rgb = hsv_to_rgb( hsv );
     // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7)
     IS31FL3736_mono_set_brightness(55, rgb.r);
     IS31FL3736_mono_set_brightness(63, rgb.g);
     IS31FL3736_mono_set_brightness(71, rgb.b);
+
+    if ( IS_LAYER_ON(3) )
+    {
+        HSV hsv = { .h = 180, .s = 255, .v = g_config.brightness };
+        //HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness };
+        RGB rgb = hsv_to_rgb( hsv );
+        // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7)
+        IS31FL3736_mono_set_brightness(55, rgb.r);
+        IS31FL3736_mono_set_brightness(63, rgb.g);
+        IS31FL3736_mono_set_brightness(71, rgb.b);
+    }
+    else if ( IS_LAYER_ON(2) )
+    {
+        HSV hsv = { .h = 43, .s = 255, .v = g_config.brightness };
+        //HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness };
+        RGB rgb = hsv_to_rgb( hsv );
+        // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7)
+        IS31FL3736_mono_set_brightness(55, rgb.r);
+        IS31FL3736_mono_set_brightness(63, rgb.g);
+        IS31FL3736_mono_set_brightness(71, rgb.b);
+    }
+    else if ( IS_LAYER_ON(1) )
+    {
+        HSV hsv = { .h = 150, .s = 255, .v = g_config.brightness };
+        //HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness };
+        RGB rgb = hsv_to_rgb( hsv );
+        // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7)
+        IS31FL3736_mono_set_brightness(55, rgb.r);
+        IS31FL3736_mono_set_brightness(63, rgb.g);
+        IS31FL3736_mono_set_brightness(71, rgb.b);
+    }
+
 #endif // MONO_BACKLIGHT_WT75_A
 }
 

@@ -1,4 +1,5 @@
 #include QMK_KEYBOARD_H
+#include "print.h"
 
 // custom keycodes.
 enum my_keycodes {
@@ -9,6 +10,8 @@ enum my_keycodes {
     AF_5,
     AF_6,
     AF_7,
+    AF_E,
+    AF_R
 };
 
 bool RAF_1 = false;
@@ -18,11 +21,19 @@ bool RAF_4 = false;
 bool RAF_5 = false;
 bool RAF_6 = false;
 bool RAF_7 = false;
+bool RAF_E = false;
+bool RAF_R = false;
 
 static uint16_t key_timer;
 
 #define REPEAT_DELAY 200
-#define REPEAT_TERM 60
+#define REPEAT_TERM 70
+
+void keyboard_post_init_user(void) {
+    debug_enable=false;
+    debug_matrix=false;
+}
+
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
@@ -89,46 +100,75 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 RAF_7 = false;
             }
             break;
+        case AF_E:
+            if (record->event.pressed) {
+                RAF_E = true;
+                key_timer = timer_read();
+                tap_code16(KC_E);
+            } else {
+                RAF_E = false;
+            }
+            break;
+        case AF_R:
+            if (record->event.pressed) {
+                RAF_R = true;
+                key_timer = timer_read();
+                tap_code16(KC_R);
+            } else {
+                RAF_R = false;
+            }
+            break;
     }
     return true;
 }
+
 
 // matrix scan is called on every scan
 void matrix_scan_user(void) {
     if (RAF_1) {
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_1);
-            _delay_ms(REPEAT_TERM);
+            key_timer = timer_read();
         }
     } else if (RAF_2){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_2);
-            _delay_ms(REPEAT_TERM);
+            key_timer = timer_read();
         }
     } else if (RAF_3){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_3);
-            _delay_ms(REPEAT_TERM);
+            key_timer = timer_read();
         }
     } else if (RAF_4){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_4);
-            _delay_ms(REPEAT_TERM);
+            key_timer = timer_read();
         }
     } else if (RAF_5){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_5);
-            _delay_ms(REPEAT_TERM);
+            key_timer = timer_read();
         }
     } else if (RAF_6){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_6);
-            _delay_ms(REPEAT_TERM);
+            key_timer = timer_read();
         }
     } else if (RAF_7){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_7);
-            _delay_ms(REPEAT_TERM);
+            key_timer = timer_read();
+        }
+    } else if (RAF_E){
+        if (timer_elapsed(key_timer) > REPEAT_DELAY) {
+            tap_code(KC_E);
+            key_timer = timer_read();
+        }
+    } else if (RAF_R){
+        if (timer_elapsed(key_timer) > REPEAT_DELAY) {
+            tap_code(KC_R);
+            key_timer = timer_read();
         }
     }
 }
@@ -144,7 +184,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
       LT(1,KC_TAB),  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, KC_RBRC, KC_BSPC,          KC_PGUP,
             KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT, KC_ENT,                    KC_PGDN,
             KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,                   KC_UP,   KC_END,
-            KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             KC_RALT, MO(1),            KC_LEFT, KC_DOWN, KC_RGHT),
+            KC_LCTL, KC_LGUI, KC_LALT,                            KC_SPC,                             TG(2),   MO(1),            KC_LEFT, KC_DOWN, KC_RGHT),
 
     // Fn1 Layer
     [1] = LAYOUT_all(
@@ -158,11 +198,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // Fn2 Layer
     [2] = LAYOUT_all(
             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   KC_TRNS,
-            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,
+            KC_TRNS, KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    KC_6,    KC_7,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
+            KC_TAB,  KC_TRNS, KC_TRNS, AF_E,    AF_R,    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,          KC_TRNS,
             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   KC_TRNS,
             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,                   KC_TRNS, KC_TRNS,
-            KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS,                            KC_TRNS, KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS),
+            KC_TRNS, KC_TRNS, KC_TRNS,                            KC_TRNS,                            TG(2),   KC_TRNS,          KC_TRNS, KC_TRNS, KC_TRNS),
 
     // Fn3 Layer
     [3] = LAYOUT_all(
@@ -202,3 +242,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 };
 
+
+
+/* layer_state_t layer_state_set_user(layer_state_t state) { */
+/*     switch (get_highest_layer(state)) { */
+/*         case 0: */
+/*         case 1: */
+/*         case 1: */
+/*         break; */
+/*  */
+/*     } */
+/*     return state; */
+/* } */
