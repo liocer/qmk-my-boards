@@ -172,9 +172,20 @@ void backlight_effect_indicators(void)
     IS31FL3736_mono_set_brightness(63, rgb.g);
     IS31FL3736_mono_set_brightness(71, rgb.b);
 
+    /* if ( IS_LAYER_ON(4) ) */
+    /* { */
+    /*     HSV hsv = { .h = 200, .s = 255, .v = g_config.brightness }; */
+    /*     //HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness }; */
+    /*     RGB rgb = hsv_to_rgb( hsv ); */
+    /*     // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7) */
+    /*     IS31FL3736_mono_set_brightness(55, rgb.r); */
+    /*     IS31FL3736_mono_set_brightness(63, rgb.g); */
+    /*     IS31FL3736_mono_set_brightness(71, rgb.b); */
+    /* } */
+    /* else  */
     if ( IS_LAYER_ON(3) )
     {
-        HSV hsv = { .h = 180, .s = 255, .v = g_config.brightness };
+        HSV hsv = { .h = 150, .s = 255, .v = g_config.brightness };
         //HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness };
         RGB rgb = hsv_to_rgb( hsv );
         // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7)
@@ -184,7 +195,7 @@ void backlight_effect_indicators(void)
     }
     else if ( IS_LAYER_ON(2) )
     {
-        HSV hsv = { .h = 43, .s = 255, .v = g_config.brightness };
+        HSV hsv = { .h = 70, .s = 255, .v = g_config.brightness };
         //HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness };
         RGB rgb = hsv_to_rgb( hsv );
         // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7)
@@ -194,7 +205,7 @@ void backlight_effect_indicators(void)
     }
     else if ( IS_LAYER_ON(1) )
     {
-        HSV hsv = { .h = 150, .s = 255, .v = g_config.brightness };
+        HSV hsv = { .h = 43, .s = 255, .v = g_config.brightness };
         //HSV hsv = { .h = 254, .s = 255, .v = g_config.brightness };
         RGB rgb = hsv_to_rgb( hsv );
         // G8, H8, I8 -> (6*8+7) (7*8+7), (8*8+7)
