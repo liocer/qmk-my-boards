@@ -26,6 +26,8 @@ enum my_keycodes {
     AF_5,
     AF_6,
     AF_7,
+    AF_8,
+    AF_9,
     AF_E,
     AF_R
 };
@@ -37,13 +39,15 @@ bool RAF_4 = false;
 bool RAF_5 = false;
 bool RAF_6 = false;
 bool RAF_7 = false;
+bool RAF_8 = false;
+bool RAF_9 = false;
 bool RAF_E = false;
 bool RAF_R = false;
 
 static uint16_t key_timer;
 
 #define REPEAT_DELAY 200
-#define REPEAT_TERM 70
+#define REPEAT_TERM 50
 
 void keyboard_post_init_user(void) {
     debug_enable=false;
@@ -116,6 +120,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 RAF_7 = false;
             }
             break;
+        case AF_8:
+            if (record->event.pressed) {
+                RAF_8 = true;
+                key_timer = timer_read();
+                tap_code16(KC_8);
+            } else {
+                RAF_8 = false;
+            }
+            break;
+        case AF_9:
+            if (record->event.pressed) {
+                RAF_9 = true;
+                key_timer = timer_read();
+                tap_code16(KC_9);
+            } else {
+                RAF_9 = false;
+            }
+            break;
         case AF_E:
             if (record->event.pressed) {
                 RAF_E = true;
@@ -176,6 +198,16 @@ void matrix_scan_user(void) {
             tap_code(KC_7);
             key_timer = timer_read();
         }
+    } else if (RAF_8){
+        if (timer_elapsed(key_timer) > REPEAT_DELAY) {
+            tap_code(KC_8);
+            key_timer = timer_read();
+        }
+    } else if (RAF_9){
+        if (timer_elapsed(key_timer) > REPEAT_DELAY) {
+            tap_code(KC_9);
+            key_timer = timer_read();
+        }
     } else if (RAF_E){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_E);
@@ -192,7 +224,7 @@ void matrix_scan_user(void) {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [0] = LAYOUT_60_hhkb( /* Base */
-            KC_ESC,  AF_1,    AF_2,    AF_3,    AF_4,    AF_5,    AF_6,    AF_7,    KC_8,     KC_9,    KC_0,     KC_MINS,  KC_EQL,  KC_GRV,  KC_BSLS,\
+            KC_ESC,  AF_1,    AF_2,    AF_3,    AF_4,    AF_5,    AF_6,    AF_7,    AF_8,     AF_9,    KC_0,     KC_MINS,  KC_EQL,  KC_BSLS,  KC_GRV,\
      LT(3, KC_TAB),  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,     KC_O,    KC_P,     KC_LBRC,  KC_RBRC,          KC_BSPC,\
             KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,     KC_L,    KC_SCLN,  KC_QUOT,           KC_ENT,          \
             KC_LSFT,          KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,     KC_COMM, KC_DOT,   KC_SLSH,  KC_RSFT,          MO(2),  \
