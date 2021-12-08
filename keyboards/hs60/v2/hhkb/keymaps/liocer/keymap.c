@@ -29,7 +29,8 @@ enum my_keycodes {
     AF_8,
     AF_9,
     AF_E,
-    AF_R
+    AF_R,
+    AF_F
 };
 
 bool RAF_1 = false;
@@ -43,6 +44,7 @@ bool RAF_8 = false;
 bool RAF_9 = false;
 bool RAF_E = false;
 bool RAF_R = false;
+bool RAF_F = false;
 
 static uint16_t key_timer;
 
@@ -156,6 +158,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 RAF_R = false;
             }
             break;
+        case AF_F:
+            if (record->event.pressed) {
+                RAF_F = true;
+                key_timer = timer_read();
+                tap_code16(KC_F);
+            } else {
+                RAF_F = false;
+            }
+            break;
     }
     return true;
 }
@@ -216,6 +227,11 @@ void matrix_scan_user(void) {
     } else if (RAF_R){
         if (timer_elapsed(key_timer) > REPEAT_DELAY) {
             tap_code(KC_R);
+            key_timer = timer_read();
+        }
+    } else if (RAF_F){
+        if (timer_elapsed(key_timer) > REPEAT_DELAY) {
+            tap_code(KC_F);
             key_timer = timer_read();
         }
     }
