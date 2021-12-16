@@ -126,6 +126,7 @@ backlight_config g_config = {
     .layer_1_indicator = RGB_BACKLIGHT_LAYER_1_INDICATOR,
     .layer_2_indicator = RGB_BACKLIGHT_LAYER_2_INDICATOR,
     .layer_3_indicator = RGB_BACKLIGHT_LAYER_3_INDICATOR,
+    .layer_4_indicator = RGB_BACKLIGHT_LAYER_4_INDICATOR,
     .alphas_mods = {
         RGB_BACKLIGHT_ALPHAS_MODS_ROW_0,
         RGB_BACKLIGHT_ALPHAS_MODS_ROW_1,
@@ -827,6 +828,7 @@ typedef struct Point {
 #if defined(RGB_BACKLIGHT_ZEAL65)
 const Point g_map_led_to_point[BACKLIGHT_LED_COUNT] PROGMEM = {
     // LA0..LA17
+    // U-TAB
     {120,16}, {104,16}, {88,16}, {72,16}, {56,16}, {40,16}, {24,16}, {4,16}, {4,32},
     {128,0}, {112,0}, {96,0}, {80,0}, {64,0}, {48,0}, {32,0}, {16,0}, {0,0},
     // LB0..LB17
@@ -865,7 +867,7 @@ const Point g_map_led_to_point[BACKLIGHT_LED_COUNT] PROGMEM = {
     {112,64}, {100,48}, {84,48}, {68,48}, {52,48}, {36,48}, {64,60}, {44,60}, {24,64},
     {108,32}, {92,32}, {76,32}, {60,32}, {44,32}, {28,32}, {255,255}, {10,48}, {4,64},
     // LD0..LD1762
-	
+
     {124,32}, {140,32}, {156,32}, {172,32}, {188,32}, {214,32}, {180,48}, {202,48}, {224,48},
     {116,48}, {132,48}, {148,48}, {164,48}, {255,255}, {160,60}, {180,64}, {208,64}, {255,255}
 };
@@ -2211,6 +2213,7 @@ void backlight_effect_indicators_set_colors( uint8_t index, HS color )
 {
     HSV hsv = { .h = color.h, .s = color.s, .v = g_config.brightness };
     RGB rgb = hsv_to_rgb( hsv );
+
     if ( index == 254 )
     {
         backlight_set_color_all( rgb.r, rgb.g, rgb.b );
@@ -2260,7 +2263,14 @@ void backlight_effect_indicators(void)
     // still the backlight configuration layer and we don't
     // want "all LEDs" indicators hiding the backlight effect,
     // but still allow end users to do whatever they want.
-    if ( IS_LAYER_ON(3) )
+    if ( IS_LAYER_ON(4) )
+    {
+        if ( g_config.layer_4_indicator.index != 255 )
+        {
+            backlight_effect_indicators_set_colors( g_config.layer_4_indicator.index, g_config.layer_4_indicator.color );
+        }
+    }
+    else if ( IS_LAYER_ON(3) )
     {
         if ( g_config.layer_3_indicator.index != 255 )
         {
@@ -2729,7 +2739,7 @@ void backlight_config_set_alphas_mods( uint16_t *alphas_mods )
 
 void backlight_config_load(void)
 {
-    eeprom_read_block( &g_config, ((void*)RGB_BACKLIGHT_CONFIG_EEPROM_ADDR), sizeof(backlight_config) );
+    //eeprom_read_block( &g_config, ((void*)RGB_BACKLIGHT_CONFIG_EEPROM_ADDR), sizeof(backlight_config) );
 }
 
 void backlight_config_save(void)

@@ -63,6 +63,7 @@ typedef struct
 	backlight_config_indicator layer_1_indicator;	// 3 bytes
 	backlight_config_indicator layer_2_indicator;	// 3 bytes
 	backlight_config_indicator layer_3_indicator;	// 3 bytes
+	backlight_config_indicator layer_4_indicator;	// 3 bytes
 	uint16_t alphas_mods[5];            // 10 bytes
 #if defined(RGB_BACKLIGHT_M6_B) || defined(RGB_BACKLIGHT_M10_C)
 	HS custom_color[RGB_BACKLIGHT_CUSTOM_COLORS_COUNT];                 // 12 or 20 bytes
