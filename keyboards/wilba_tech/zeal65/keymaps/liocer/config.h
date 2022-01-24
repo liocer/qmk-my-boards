@@ -11,10 +11,10 @@
 #define RGB_BACKLIGHT_LAYER_1_INDICATOR { .color = { .h = 150, .s = 255 }, .index = 24 } //blue
 
 #undef RGB_BACKLIGHT_LAYER_2_INDICATOR
-#define RGB_BACKLIGHT_LAYER_2_INDICATOR { .color = { .h = 90, .s = 255 }, .index = 24 } //cyan
+#define RGB_BACKLIGHT_LAYER_2_INDICATOR { .color = { .h = 95, .s = 255 }, .index = 24 } //cyan
 
 #undef RGB_BACKLIGHT_LAYER_3_INDICATOR
 #define RGB_BACKLIGHT_LAYER_3_INDICATOR { .color = { .h = 21, .s = 255 }, .index = 24 } //orange
 
 #undef RGB_BACKLIGHT_LAYER_4_INDICATOR
-#define RGB_BACKLIGHT_LAYER_4_INDICATOR { .color = { .h = 64, .s = 255 }, .index = 24 } //lime green
+#define RGB_BACKLIGHT_LAYER_4_INDICATOR { .color = { .h = 250, .s = 255 }, .index = 24 } //lime green
