@@ -108,7 +108,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGB_BACKLIGHT_DISABLE_AFTER_TIMEOUT 0
 
 // the default brightness
-#define RGB_BACKLIGHT_BRIGHTNESS 0
+#define RGB_BACKLIGHT_BRIGHTNESS 255
 
 // the default effect (RGB test)
 #define RGB_BACKLIGHT_EFFECT 1

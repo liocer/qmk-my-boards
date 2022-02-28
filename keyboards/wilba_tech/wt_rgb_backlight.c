@@ -2214,6 +2214,7 @@ void backlight_effect_indicators_set_colors( uint8_t index, HS color )
     HSV hsv = { .h = color.h, .s = color.s, .v = g_config.brightness };
     RGB rgb = hsv_to_rgb( hsv );
 
+        backlight_set_color( index, rgb.r, rgb.g, rgb.b );
     if ( index == 254 )
     {
         backlight_set_color_all( rgb.r, rgb.g, rgb.b );
